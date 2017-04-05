@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
 	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 	<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-	<title>CommanDir</title>
+	<title>ThinC</title>
 	<script type="text/javascript">
 		img{
 			max-width:80%;
@@ -82,6 +82,9 @@
 							case 'status':
 								status(obj.con);
 								break;
+							case 'txt':
+								txt(obj.con);
+								break;
 							default:
 								error(obj.con);
 						}
@@ -129,6 +132,13 @@
 		$("#command").val("");
 		$("#command").removeAttr('disabled');
 	}
+	function txt(data){
+		var txt=$("<p class=\"text-danger\">"+data+"<p>");
+		txt.appendTo(".show");
+		$("#command").attr("placeholder","完成！");
+		$("#command").val("");
+		$("#command").removeAttr('disabled');
+	}
 	function image(data){
 		var p=$("<div><img src=\""+data+"\" /></div>");
 		p.appendTo(".show");
@@ -137,7 +147,7 @@
 		$("#command").removeAttr('disabled');
 	}
 	function video(data){
-		var p=$("<div><video src=\""+data+"\" controls=\"controls\"></video></div>");
+		var p=$("<div><video src=\""+data+"\"></video></div>");
 		p.appendTo(".show");
 		$("#command").attr("placeholder","完成！");
 		$("#command").val("");
