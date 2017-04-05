@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<title>ThinC</title>
+	<script type="text/javascript">
+		img{
+			max-width:80%;
+		}
+	</script>
+</head>
+<body>
+	<div class="container screen">
+		<div class="row showc" style="height: 800px;background: #222222;color:#FFF;overflow-y:scroll;">	
+			<div class="row show" style="padding-left: 20px;">
+			</div>
+		</div>
+			<div class="row" >
+				<div class="input-group">
+					<div class="input-group-btn">
+						<button class="btn btn-default fullscreen"><span class="glyphicon glyphicon-fullscreen"></span></button>
+					</div>
+					<input type="text" name="in" class="form-control" id="command">
+				</div>
+			</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+	$(".fullscreen").click(function(){
+		$(".screen").removeClass('container');
+		$(".screen").addClass('container-fulid');
+		var height=$(window).height();
+		var c_h=$(".fullscreen").height();
+		$(".screen").height(height);
+		$(".showc").height(height-2*c_h);
+		$(".showc").css('overflowX','hidden');
+		$(".screen").css('margin-left','10px');
+	})
+	$(document).keypress(function(event){
+		var keycode = (event.keyCode ? event.keyCode : event.which);
+		if(keycode==13){
+			command();
+		}
+	})
+	function command(){
+		var command=$("#command").val();
+		var isclear=clear(command);
+		var ishelp=help(command);
+		if(isclear&&ishelp&&command){
+			$.ajax({
+				url:'do.php?command='+command,
+				beforeSend:function(){
+					var com_div=$("<div>$ "+command+"</div>");
+					com_div.appendTo(".show");
+					$("#command").val("");
+					$("#command").attr("placeholder","你的命令已经输入，请等待执行");
+					$("#command").attr("disabled",'true');
+					scroll();
+				},
+				success:function(data){
+					obj=eval('('+data+')');
+					if(obj.status){
+						switch(obj.type){
+							case 'list':
+								list(obj.con);
+								break;
+							case 'image':
+								image(obj.con);
+								break
+							case 'text':
+								text(obj.con);
+								break
+							case 'video':
+								video(obj.con);
+								break;
+							case 'status':
+								status(obj.con);
+								break;
+							default:
+								error(obj.con);
+						}
+
+					}else{
+							error(obj.con);
+					}
+					scroll();
+				}
+			})
+		}
+	}
+	function clear(data){
+		data=data.toLowerCase();
+		if(data=="clear"){
+			$(".show").html("");
+			$("#command").attr("placeholder","已经清理完毕,请输入命令");
+			$("#command").val("");
+			return false;
+		}else{
+			return true;
+		}
+	}
+	function scroll(){
+		var all=$(".show").height();
+		var height=$(".showc").height();
+		$(".showc").scrollTop(all-height);
+	}
+	function help(data){
+		data=data.toLowerCase();
+		if(data=="help"){
+			var p=$("<p>ls 列出当前的目录下文件</p><p>cd 更改当前的目录</p><p>cat 查看文件</p>");
+			p.appendTo(".show");
+			$("#command").attr("placeholder","请使用以上命令");
+			$("#command").val("");
+			return false;
+		}else{
+			return true;
+		}
+	}
+	function error(){
+		var error=$("<p class=\"text-danger\">错误<p>");
+		error.appendTo(".show");
+		$("#command").attr("placeholder","请输入命令");
+		$("#command").val("");
+		$("#command").removeAttr('disabled');
+	}
+	function image(data){
+		var p=$("<div><img src=\""+data+"\"/></div>");
+		p.appendTo(".show");
+		$("#command").attr("placeholder","完成！");
+		$("#command").val("");
+		$("#command").removeAttr('disabled');
+	}
+	function video(data){
+		var p=$("<div><video src=\""+data+"\"></video></div>");
+		p.appendTo(".show");
+		$("#command").attr("placeholder","完成！");
+		$("#command").val("");
+		$("#command").removeAttr('disabled');
+	}
+	function text(data){
+		var p=$("<div><iframe src=\""+data+"\"></iframe></div>");
+		p.appendTo(".show");
+		$("#command").attr("placeholder","完成！");
+		$("#command").val("");
+		$("#command").removeAttr('disabled');
+	}
+	function list(data){
+		var table=$("<table class=\"table\" ></table>");
+		$("<tr><th>文件名</th><th>创建时间</th><th>读取时间</th><th>更改时间</th><th>类型</th><th>大小</th></tr>").appendTo(table);
+		for(x in data){
+			if(data[x].type=="dir"){
+				var p=$("<tr class=\"text-success\" ><td>"+data[x].name+"</td><td>"+data[x].ctime+"</td><td>"+data[x].atime+"</td><td>"+data[x].mtime+"</td><td>"+data[x].type+"</td><td></td></tr>");
+				p.appendTo(table);
+			}else{
+				var p=$("<tr class=\"text-muted\" ><td>"+data[x].name+"</td><td>"+data[x].ctime+"</td><td>"+data[x].atime+"</td><td>"+data[x].mtime+"</td><td>"+data[x].type+"</td><td>"+data[x].size+"</td></tr>");
+				p.appendTo(table);
+			}
+		}
+		table.appendTo(".show");
+		$("#command").removeAttr('disabled');
+	}
+
+</script>
