@@ -89,10 +89,10 @@
 			if($string_1){
 				$re['con']=md5($string_1.$string_2);
 				$re['status']=true;
-				$re['type']="text";
+				$re['type']="txt";
 			}else{
 				$re['status']=false;
-				$re['type']="text";
+				$re['type']="txt";
 				$re['con']="未输入字符串";
 			}
 			$this->json($re);
@@ -105,13 +105,13 @@
 				$date=date('Y-m-d H:i:s',$time);
 				$re['con']="当前时间戳:".$time." 对应时间:".$date;
 				$re['status']=true;
-				$re['type']="text";
+				$re['type']="txt";
 			}else{
 				$time=time();
 				$date=date('Y-m-d H:i:s');
 				$re['con']="当前时间戳:".$time." 对应时间:".$date;
 				$re['status']=true;
-				$re['type']="text";
+				$re['type']="txt";
 			}
 			$this->json($re);
 		}
@@ -124,17 +124,17 @@
 				$num=mt_rand($s,$e);
 				$re['con']="随机数:".$num;
 				$re['status']=true;
-				$re['type']="text";
+				$re['type']="txt";
 			}elseif($s>$e){
 				$num=mt_rand($e,$s);
 				$re['con']="随机数:".$num;
 				$re['status']=true;
-				$re['type']="text";
+				$re['type']="txt";
 			}else{
 				$num=mt_rand(1,999);
 				$re['con']="[1-999中]随机数:".$num;
 				$re['status']=true;
-				$re['type']="text";
+				$re['type']="txt";
 			}
 			$this->json($re);
 		}
