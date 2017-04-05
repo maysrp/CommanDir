@@ -137,7 +137,7 @@
 		$("#command").removeAttr('disabled');
 	}
 	function video(data){
-		var p=$("<div><video src=\""+data+"\"></video></div>");
+		var p=$("<div><video src=\""+data+"\" controls=\"controls\"></video></div>");
 		p.appendTo(".show");
 		$("#command").attr("placeholder","完成！");
 		$("#command").val("");
