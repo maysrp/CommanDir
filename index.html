@@ -130,7 +130,7 @@
 		$("#command").removeAttr('disabled');
 	}
 	function image(data){
-		var p=$("<div><img src=\""+data+"\"/></div>");
+		var p=$("<div><img src=\""+data+"\" /></div>");
 		p.appendTo(".show");
 		$("#command").attr("placeholder","完成！");
 		$("#command").val("");
@@ -144,7 +144,7 @@
 		$("#command").removeAttr('disabled');
 	}
 	function text(data){
-		var p=$("<div><iframe src=\""+data+"\"></iframe></div>");
+		var p=$("<div><iframe src=\""+data+"\" frameborder=\"no\" border=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"80%\" allowtransparency=\"yes\" style=\"color:#FFF;background:#FFF\"></iframe></div>");
 		p.appendTo(".show");
 		$("#command").attr("placeholder","完成！");
 		$("#command").val("");
