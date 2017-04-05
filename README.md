@@ -1,3 +1,7 @@
+##CommanDir
+
+不建议在windows下使用
+
 ## 命令
 time  获得当前时间
 
@@ -15,3 +19,5 @@ cat 查看文件[支持文件]
 * html md json 
 * jpg gif png
 * mp4
+
+![6f7204273537d937.png](http://bilibara.com/images/2017/04/05/6f7204273537d937.png)
